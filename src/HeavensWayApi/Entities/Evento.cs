@@ -11,8 +11,8 @@ namespace HeavensWayApi.Entities
         public DateTime DataInicio { get; set; }
         public TimeSpan Duracao { get; set; }
 
-        ICollection<Usuario> Usuarios { get; set; }
+        public ICollection<Usuario> Usuarios { get; set; }
 
-        ICollection<Igreja> Igrejas { get; set; }
+        public ICollection<Igreja> Igrejas { get; set; }
     }
 }

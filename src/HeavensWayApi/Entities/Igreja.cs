@@ -11,6 +11,6 @@ namespace HeavensWayApi.Entities
         public int EnderecoId {get; set; }
         public Endereco Endereco { get; set; }
 
-        ICollection<Evento> Eventos { get; set; }
+        public ICollection<Evento> Eventos { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using HeavensWayApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeavensWayApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240511215736_UsuarioIntPK")]
+    partial class UsuarioIntPK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,36 +24,6 @@ namespace HeavensWayApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("EventoIgreja", b =>
-                {
-                    b.Property<int>("EventosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IgrejasId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventosId", "IgrejasId");
-
-                    b.HasIndex("IgrejasId");
-
-                    b.ToTable("EventoIgreja");
-                });
-
-            modelBuilder.Entity("EventoUsuario", b =>
-                {
-                    b.Property<int>("EventosId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuariosId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EventosId", "UsuariosId");
-
-                    b.HasIndex("UsuariosId");
-
-                    b.ToTable("EventoUsuario");
-                });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Distrito", b =>
                 {
@@ -382,36 +355,6 @@ namespace HeavensWayApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("EventoIgreja", b =>
-                {
-                    b.HasOne("HeavensWayApi.Entities.Evento", null)
-                        .WithMany()
-                        .HasForeignKey("EventosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HeavensWayApi.Entities.Igreja", null)
-                        .WithMany()
-                        .HasForeignKey("IgrejasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EventoUsuario", b =>
-                {
-                    b.HasOne("HeavensWayApi.Entities.Evento", null)
-                        .WithMany()
-                        .HasForeignKey("EventosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HeavensWayApi.Entities.Usuario", null)
-                        .WithMany()
-                        .HasForeignKey("UsuariosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Evento", b =>
