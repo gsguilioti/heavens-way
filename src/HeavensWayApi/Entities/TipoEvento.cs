@@ -7,6 +7,8 @@ namespace HeavensWayApi.Entities
         public int Id {get; set; }
         public string Descricao { get; set; }
 
+        public TipoEvento() {}
+
         public TipoEvento(TipoEventoDto dto)
         {
             Descricao = dto.Descricao;

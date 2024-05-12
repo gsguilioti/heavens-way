@@ -9,6 +9,7 @@ namespace HeavensWayApi.Dto
         public int DistritoId {get; set; }
         public int EnderecoId {get; set; }
 
+        public IgrejaDto() {}
         public IgrejaDto(Igreja igreja)
         {
             Nome = igreja.Nome;

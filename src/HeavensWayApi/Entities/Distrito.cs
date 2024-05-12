@@ -7,6 +7,7 @@ namespace HeavensWayApi.Entities
         public int Id { get; set; }
         public string Nome { get; set; }
 
+        public Distrito() {}
         public Distrito(DistritoDto dto)
         {
             Nome = dto.Nome;

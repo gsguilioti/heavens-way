@@ -11,6 +11,8 @@ namespace HeavensWayApi.Entities
         public string Cidade { get; set; }
         public string Estado { get; set; }
 
+        public Endereco() {}
+
         public Endereco(EnderecoDto dto)
         {
             Cep = dto.Cep;

@@ -6,6 +6,7 @@ namespace HeavensWayApi.Dto
     {
         public string Nome { get; set; }
 
+        public DistritoDto() {}
         public DistritoDto(Distrito distrito)
         {
             Nome = distrito.Nome;

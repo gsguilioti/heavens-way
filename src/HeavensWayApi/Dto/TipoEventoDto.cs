@@ -6,6 +6,7 @@ namespace HeavensWayApi.Dto
     {
         public string Descricao { get; set; }
 
+        public TipoEventoDto() {}
         public TipoEventoDto(TipoEvento tipoEvento)
         {
             Descricao = tipoEvento.Descricao;

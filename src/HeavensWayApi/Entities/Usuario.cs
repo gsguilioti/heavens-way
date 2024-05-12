@@ -7,7 +7,6 @@ namespace HeavensWayApi.Entities
     public class Usuario : IdentityUser<int>
     {
         public string Nome {get; set; }
-
         public int IgrejaId { get; set; }
         public Igreja Igreja { get; set; }
 
@@ -16,12 +15,16 @@ namespace HeavensWayApi.Entities
         public Usuario() {}
         public Usuario(UsuarioDto dto)
         {
+            UserName = dto.UserName;
+            Email = dto.Email;
             Nome = dto.Nome;
             IgrejaId = dto.IgrejaId;
         }
 
         public void MapDto(UsuarioDto dto)
         {
+            UserName = dto.UserName;
+            Email = dto.Email;
             Nome = dto.Nome;
             IgrejaId = dto.IgrejaId;
         }

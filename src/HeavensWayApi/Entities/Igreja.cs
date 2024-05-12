@@ -15,6 +15,8 @@ namespace HeavensWayApi.Entities
 
         public ICollection<Evento> Eventos { get; set; }
 
+        public Igreja() {}
+
         public Igreja(IgrejaDto dto)
         {
             Nome = dto.Nome;

@@ -34,7 +34,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("IgrejasId");
 
-                    b.ToTable("EventoIgreja");
+                    b.ToTable("EventoIgreja", (string)null);
                 });
 
             modelBuilder.Entity("EventoUsuario", b =>
@@ -49,7 +49,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("UsuariosId");
 
-                    b.ToTable("EventoUsuario");
+                    b.ToTable("EventoUsuario", (string)null);
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Distrito", b =>
@@ -66,7 +66,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Distritos");
+                    b.ToTable("Distritos", (string)null);
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Endereco", b =>
@@ -99,7 +99,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Enderecos");
+                    b.ToTable("Enderecos", (string)null);
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Evento", b =>
@@ -127,7 +127,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("TipoEventoId");
 
-                    b.ToTable("Eventos");
+                    b.ToTable("Eventos", (string)null);
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Igreja", b =>
@@ -154,7 +154,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("EnderecoId");
 
-                    b.ToTable("Igrejas");
+                    b.ToTable("Igrejas", (string)null);
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.TipoEvento", b =>
@@ -171,7 +171,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposEvento");
+                    b.ToTable("TiposEvento", (string)null);
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Usuario", b =>

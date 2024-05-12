@@ -2,6 +2,10 @@ using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace HeavensWayApi.Controllers
 {
@@ -9,63 +13,72 @@ namespace HeavensWayApi.Controllers
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
     {
-        private readonly UsuarioRepository _repository;
-        public UsuarioController(UsuarioRepository repository)
+        private readonly UserManager<Usuario> _userManager;  
+        public UsuarioController(UserManager<Usuario> userManager)
         {
-            _repository = repository;
+            _userManager = userManager;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var usuario = _repository.GetById(id);
+            var usuario = await _userManager.FindByIdAsync(id.ToString());
 
             if(usuario == null)
                 return NotFound(new { Message = "Not Found"});
 
-            var usuarioDto = new UsuarioDto(usuario);
-            return Ok(usuarioDto);
+            return Ok(usuario);
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var usuarios = _repository.GetAll();
-                
-            return Ok(usuarios);
+            var users = await _userManager.Users.Select(x => new GetUsuarioDto(x)).ToListAsync();
+            return Ok(users);
         }
 
         [HttpPost]
-        public IActionResult Create(UsuarioDto dto)
+        public async Task<IActionResult> Create(UsuarioDto dto)
         {
             var usuario = new Usuario(dto);
-            _repository.Create(usuario);
+            var result = await _userManager.CreateAsync(usuario, dto.Password);
+
+            if(!result.Succeeded)
+                return BadRequest(result.Errors);
+
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, UsuarioDto dto)
+        public async Task<IActionResult> Update(int id, UsuarioDto dto)
         {
-            var usuario = _repository.GetById(id);
+            var usuario = await _userManager.FindByIdAsync(id.ToString());
 
             if(usuario == null)
                 return NotFound(new { Message = "Not Found"});
 
             usuario.MapDto(dto);
-            _repository.Update(usuario);
-            return Ok(usuario);
+
+            var result = await _userManager.UpdateAsync(usuario);
+            if(!result.Succeeded)
+                return BadRequest(result.Errors);
+            
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var usuario = _repository.GetById(id);
+            var usuario = await _userManager.FindByIdAsync(id.ToString());
 
             if(usuario == null)
                 return NotFound(new { Message = "Not Found"});
 
-            _repository.Delete(usuario);
-            return NoContent();
+            var result = await _userManager.DeleteAsync(usuario);
+            if(!result.Succeeded)
+                return BadRequest(result.Errors);
+            
+            return Ok();
         }
     }
 }

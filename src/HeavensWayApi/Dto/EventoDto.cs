@@ -11,6 +11,7 @@ namespace HeavensWayApi.Dto
         public DateTime DataInicio { get; set; }
         public TimeSpan Duracao { get; set; }
 
+        public EventoDto() {}
         public EventoDto(Evento evento)
         {
             Descricao = evento.Descricao;

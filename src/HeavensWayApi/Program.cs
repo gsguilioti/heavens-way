@@ -8,7 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    sqlServerOptions => sqlServerOptions.EnableRetryOnFailure());
+});
+
+builder.Services.AddIdentity<Usuario, IdentityRole<int>>()
+    .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.AllowedUserNameCharacters = null;
+    options.User.RequireUniqueEmail = false;
 });
 
 builder.Services.AddScoped<DistritoRepository>();
@@ -16,7 +26,7 @@ builder.Services.AddScoped<EnderecoRepository>();
 builder.Services.AddScoped<EventoRepository>();
 builder.Services.AddScoped<IgrejaRepository>();
 builder.Services.AddScoped<TipoEventoRepository>();
-builder.Services.AddScoped<UsuarioRepository>();
+builder.Services.AddScoped<UserManager<Usuario>>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,15 +35,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication().AddJwtBearer();
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentityApiEndpoints<Usuario>()
-    .AddEntityFrameworkStores<DataContext>();
-
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapIdentityApi<Usuario>();
 
 if (app.Environment.IsDevelopment())
 {
