@@ -1,3 +1,5 @@
+using HeavensWayApi.Dto;
+
 namespace HeavensWayApi.Entities
 {
     public class Igreja
@@ -12,5 +14,19 @@ namespace HeavensWayApi.Entities
         public Endereco Endereco { get; set; }
 
         public ICollection<Evento> Eventos { get; set; }
+
+        public Igreja(IgrejaDto dto)
+        {
+            Nome = dto.Nome;
+            DistritoId = dto.DistritoId;
+            EnderecoId = dto.EnderecoId;
+        }
+
+        public void MapDto(IgrejaDto dto)
+        {
+            Nome = dto.Nome;
+            DistritoId = dto.DistritoId;
+            EnderecoId = dto.EnderecoId;
+        }
     }
 }

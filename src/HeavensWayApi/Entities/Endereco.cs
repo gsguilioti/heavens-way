@@ -1,3 +1,5 @@
+using HeavensWayApi.Dto;
+
 namespace HeavensWayApi.Entities
 {
     public class Endereco
@@ -8,5 +10,23 @@ namespace HeavensWayApi.Entities
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
+
+        public Endereco(EnderecoDto dto)
+        {
+            Cep = dto.Cep;
+            Logradouro = dto.Logradouro;
+            Bairro = dto.Bairro;
+            Cidade = dto.Cidade;
+            Estado = dto.Estado;
+        }
+
+        public void MapDto(EnderecoDto dto)
+        {
+            Cep = dto.Cep;
+            Logradouro = dto.Logradouro;
+            Bairro = dto.Bairro;
+            Cidade = dto.Cidade;
+            Estado = dto.Estado;
+        }
     }
 }
