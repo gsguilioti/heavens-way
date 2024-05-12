@@ -6,17 +6,35 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [AllowAnonymous]
     public class UsuarioController : ControllerBase
     {
         private readonly UserManager<Usuario> _userManager;  
-        public UsuarioController(UserManager<Usuario> userManager)
+        private readonly SignInManager<Usuario> _signInManager;
+        private readonly RoleManager<IdentityRole<int>> _roleManager;
+        private readonly IConfiguration _configuration;
+
+        public UsuarioController(UserManager<Usuario> userManager, 
+                                 SignInManager<Usuario> signInManager, 
+                                 RoleManager<IdentityRole<int>> roleManager,
+                                 IConfiguration configuration)
+
         {
             _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+            _configuration = configuration;
         }
 
         [HttpGet("{id}")]
@@ -45,6 +63,21 @@ namespace HeavensWayApi.Controllers
 
             if(!result.Succeeded)
                 return BadRequest(result.Errors);
+
+            var checkAdmin = await _roleManager.FindByNameAsync("Admin");
+            if (checkAdmin is null)
+            {
+                await _roleManager.CreateAsync(new IdentityRole<int>() { Name = "Admin" });
+                await _userManager.AddToRoleAsync(usuario, "Admin");
+            }
+            else
+            {
+                var checkUser = await _roleManager.FindByNameAsync("User");
+                if (checkUser is null)
+                    await _roleManager.CreateAsync(new IdentityRole<int>() { Name = "User" });
+
+                await _userManager.AddToRoleAsync(usuario, "User");
+            }
 
             return Ok();
         }
@@ -79,6 +112,50 @@ namespace HeavensWayApi.Controllers
                 return BadRequest(result.Errors);
             
             return Ok();
+        }
+
+         [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUsuarioDto dto)
+        {
+            var usuario = await _userManager.FindByNameAsync(dto.UserName);
+            if (usuario == null)
+            {
+                return Unauthorized(new { message = "Invalid username or password" });
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(usuario, dto.Password, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                var token = "Bearer " + GenerateJwtToken(usuario);
+                return Ok(new { token });
+            }
+            else
+            {
+                return Unauthorized(new { message = "Invalid username or password" });
+            }
+        }
+
+         private string GenerateJwtToken(Usuario usuario)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.UserName),
+                new Claim(ClaimTypes.Name, usuario.UserName)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["Jwt:ExpireDays"]));
+
+            var token = new JwtSecurityToken(
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

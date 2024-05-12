@@ -2,11 +2,13 @@ using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class DistritoController : ControllerBase
     {
         private readonly DistritoRepository _repository;
