@@ -4,6 +4,7 @@ using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Controllers
 {
@@ -13,8 +14,8 @@ namespace HeavensWayApi.Controllers
     [OutputCache]
     public class EnderecoController : ControllerBase
     {
-        private readonly EnderecoRepository _repository;
-        public EnderecoController(EnderecoRepository repository)
+        private readonly IEnderecoRepository _repository;
+        public EnderecoController(IEnderecoRepository repository)
         {
             _repository = repository;
         }

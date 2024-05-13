@@ -1,8 +1,9 @@
 using HeavensWayApi.Repositories;
+using HeavensWayApi.Services.Interfaces;
 
 namespace HeavensWayApi.Services
 {
-    public class EventoService
+    public class EventoService : IEventoService
     {
         private readonly UsuarioRepository _usuarioRepository;
         private readonly EventoRepository _eventoRepository;

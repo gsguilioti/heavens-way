@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Controllers
 {
@@ -26,13 +27,13 @@ namespace HeavensWayApi.Controllers
         private readonly SignInManager<Usuario> _signInManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IConfiguration _configuration;
-        private readonly UsuarioRepository _repository;
+        private readonly IUsuarioRepository _repository;
 
         public UsuarioController(UserManager<Usuario> userManager, 
                                  SignInManager<Usuario> signInManager, 
                                  RoleManager<IdentityRole<int>> roleManager,
                                  IConfiguration configuration,
-                                 UsuarioRepository repository)
+                                 IUsuarioRepository repository)
 
         {
             _userManager = userManager;
@@ -158,7 +159,7 @@ namespace HeavensWayApi.Controllers
             }
         }
 
-         private string GenerateJwtToken(Usuario usuario)
+        private string GenerateJwtToken(Usuario usuario)
         {
             var claims = new List<Claim>
             {

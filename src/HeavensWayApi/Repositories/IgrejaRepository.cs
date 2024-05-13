@@ -1,9 +1,10 @@
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Repositories
 {
-    public class IgrejaRepository
+    public class IgrejaRepository : IIgrejaRepository
     {
         private readonly DataContext _context;
         public IgrejaRepository(DataContext context)

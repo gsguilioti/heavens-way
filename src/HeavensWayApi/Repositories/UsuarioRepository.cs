@@ -1,9 +1,10 @@
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Repositories
 {
-    public class UsuarioRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly DataContext _context;
         public UsuarioRepository(DataContext context)

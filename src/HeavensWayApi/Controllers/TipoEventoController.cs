@@ -4,6 +4,7 @@ using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Controllers
 {
@@ -13,8 +14,8 @@ namespace HeavensWayApi.Controllers
     [OutputCache]
     public class TipoEventoController : ControllerBase
     {
-        private readonly TipoEventoRepository _repository;
-        public TipoEventoController(TipoEventoRepository repository)
+        private readonly ITipoEventoRepository _repository;
+        public TipoEventoController(ITipoEventoRepository repository)
         {
             _repository = repository;
         }
@@ -32,7 +33,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpGet("descricao/{description}")]
-        public IActionResult GetByCep(string description)
+        public IActionResult GetByDescription(string description)
         {
             var tiposEvento = _repository.GetByDescription(description);
 

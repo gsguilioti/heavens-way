@@ -5,6 +5,8 @@ using HeavensWayApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
+using HeavensWayApi.Repositories.Interfaces;
+using HeavensWayApi.Services.Interfaces;
 
 namespace HeavensWayApi.Controllers
 {
@@ -14,9 +16,9 @@ namespace HeavensWayApi.Controllers
     [OutputCache]
     public class EventoController : ControllerBase
     {
-        private readonly EventoRepository _repository;
-        private readonly EventoService _eventoService;
-        public EventoController(EventoRepository repository, EventoService eventoService)
+        private readonly IEventoRepository _repository;
+        private readonly IEventoService _eventoService;
+        public EventoController(IEventoRepository repository, IEventoService eventoService)
         {
             _repository = repository;
             _eventoService = eventoService;

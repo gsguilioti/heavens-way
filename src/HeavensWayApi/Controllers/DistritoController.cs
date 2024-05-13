@@ -4,6 +4,7 @@ using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Controllers
 {
@@ -13,8 +14,8 @@ namespace HeavensWayApi.Controllers
     [OutputCache]
     public class DistritoController : ControllerBase
     {
-        private readonly DistritoRepository _repository;
-        public DistritoController(DistritoRepository repository)
+        private readonly IDistritoRepository _repository;
+        public DistritoController(IDistritoRepository repository)
         {
             _repository = repository;
         }

@@ -9,6 +9,8 @@ using HeavensWayApi.Entities;
 using HeavensWayApi.Repositories;
 using HeavensWayApi.Services;
 using System.Text;
+using HeavensWayApi.Repositories.Interfaces;
+using HeavensWayApi.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,15 +31,15 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = false;
 });
 
-builder.Services.AddScoped<DistritoRepository>();
-builder.Services.AddScoped<EnderecoRepository>();
-builder.Services.AddScoped<EventoRepository>();
-builder.Services.AddScoped<IgrejaRepository>();
-builder.Services.AddScoped<TipoEventoRepository>();
-builder.Services.AddScoped<UsuarioRepository>();
+builder.Services.AddTransient<IDistritoRepository, DistritoRepository>();
+builder.Services.AddTransient<IEnderecoRepository, EnderecoRepository>();
+builder.Services.AddTransient<IEventoRepository, EventoRepository>();
+builder.Services.AddTransient<IIgrejaRepository, IgrejaRepository>();
+builder.Services.AddTransient<ITipoEventoRepository, TipoEventoRepository>();
+builder.Services.AddTransient<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<UserManager<Usuario>>();
-builder.Services.AddScoped<EventoService>();
-builder.Services.AddScoped<EnderecoService>();
+builder.Services.AddTransient<IEventoService, EventoService>();
+builder.Services.AddTransient<IEnderecoService, EnderecoService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

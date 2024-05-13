@@ -1,10 +1,11 @@
-using HeavensWayApi.Repositories;
+
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
-using HeavensWayApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
+using HeavensWayApi.Repositories.Interfaces;
+using HeavensWayApi.Services.Interfaces;
 
 namespace HeavensWayApi.Controllers
 {
@@ -14,9 +15,9 @@ namespace HeavensWayApi.Controllers
     [OutputCache]
     public class IgrejaController : ControllerBase
     {
-        private readonly IgrejaRepository _repository;
-        private readonly EnderecoService _enderecoService;
-        public IgrejaController(IgrejaRepository repository, EnderecoService enderecoService)
+        private readonly IIgrejaRepository _repository;
+        private readonly IEnderecoService _enderecoService;
+        public IgrejaController(IIgrejaRepository repository, IEnderecoService enderecoService)
         {
             _repository = repository;
             _enderecoService = enderecoService;

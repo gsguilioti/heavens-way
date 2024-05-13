@@ -1,9 +1,10 @@
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Repositories
 {
-    public class DistritoRepository
+    public class DistritoRepository : IDistritoRepository
     {
         private readonly DataContext _context;
         public DistritoRepository(DataContext context)

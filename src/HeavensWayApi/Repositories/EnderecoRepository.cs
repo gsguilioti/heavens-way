@@ -1,10 +1,10 @@
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
-using System.Text;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Repositories
 {
-    public class EnderecoRepository
+    public class EnderecoRepository : IEnderecoRepository
     {
         private readonly DataContext _context;
         public EnderecoRepository(DataContext context)

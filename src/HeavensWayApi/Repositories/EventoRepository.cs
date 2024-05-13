@@ -1,9 +1,10 @@
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Repositories
 {
-    public class EventoRepository
+    public class EventoRepository : IEventoRepository
     {
         private readonly DataContext _context;
         public EventoRepository(DataContext context)

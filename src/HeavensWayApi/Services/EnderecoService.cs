@@ -2,10 +2,11 @@ using HeavensWayApi.Repositories;
 using HeavensWayApi.Dto;
 using HeavensWayApi.Entities;
 using System.Text.Json;
+using HeavensWayApi.Services.Interfaces;
 
 namespace HeavensWayApi.Services
 {
-    public class EnderecoService
+    public class EnderecoService : IEnderecoService
     {
         private readonly EnderecoRepository _enderecoRepository;
         private readonly HttpClient _httpClient;
@@ -15,9 +16,10 @@ namespace HeavensWayApi.Services
         public EnderecoService(EnderecoRepository enderecoRepository)
         {
             _enderecoRepository = enderecoRepository;
-
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(URI);
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(URI)
+            };
         }
 
         public async Task<Endereco> Create(string cep)
@@ -40,7 +42,7 @@ namespace HeavensWayApi.Services
             }
             catch(HttpRequestException ex)
             {
-                throw;
+                throw new Exception($"Falha ao recuperar informões de endereço para o CEP: {cep}. {ex.Message}");
             }
 
             return endereco;
