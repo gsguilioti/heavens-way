@@ -24,17 +24,20 @@ namespace HeavensWayApi.Controllers
         private readonly SignInManager<Usuario> _signInManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly UsuarioRepository _repository;
 
         public UsuarioController(UserManager<Usuario> userManager, 
                                  SignInManager<Usuario> signInManager, 
                                  RoleManager<IdentityRole<int>> roleManager,
-                                 IConfiguration configuration)
+                                 IConfiguration configuration,
+                                 UsuarioRepository repository)
 
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _repository = repository;
         }
 
         [HttpGet("{id}")]
@@ -46,6 +49,24 @@ namespace HeavensWayApi.Controllers
                 return NotFound(new { Message = "Not Found"});
 
             return Ok(usuario);
+        }
+
+        [HttpGet("igreja/{id}")]
+        public IActionResult GetByIgreja(int id)
+        {
+            var usuarios = _repository.GetByIgreja(id);
+
+            var usuariosoDto = usuarios.Select(u => new GetUsuarioDto(u));
+            return Ok(usuariosoDto);
+        }
+
+        [HttpGet("evento/{id}")]
+        public IActionResult GetByEvento(int id)
+        {
+            var usuarios = _repository.GetByEvento(id);
+
+            var usuariosoDto = usuarios.Select(u => new GetUsuarioDto(u));
+            return Ok(usuariosoDto);
         }
 
         [HttpGet]

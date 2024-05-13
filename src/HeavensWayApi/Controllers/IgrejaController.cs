@@ -1,6 +1,7 @@
 using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
+using HeavensWayApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,9 +13,11 @@ namespace HeavensWayApi.Controllers
     public class IgrejaController : ControllerBase
     {
         private readonly IgrejaRepository _repository;
-        public IgrejaController(IgrejaRepository repository)
+        private readonly EnderecoService _enderecoService;
+        public IgrejaController(IgrejaRepository repository, EnderecoService enderecoService)
         {
             _repository = repository;
+            _enderecoService = enderecoService;
         }
 
         [HttpGet("{id}")]
@@ -29,6 +32,14 @@ namespace HeavensWayApi.Controllers
             return Ok(igrejaDto);
         }
 
+        [HttpGet("distrito/{id}")]
+        public IActionResult GetByDistrito(int id)
+        {
+            var igrejas = _repository.GetByDistrito(id);
+                
+            return Ok(igrejas);
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -38,9 +49,13 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(IgrejaDto dto)
+        public IActionResult Create(CreateIgrejaDto dto)
         {
-            var igreja = new Igreja(dto);
+            var endereco = _enderecoService.Create(dto.Cep);
+            if(endereco == null)
+                return BadRequest();
+
+            var igreja = new Igreja(dto, endereco.Id);
             _repository.Create(igreja);
             return Ok();
         }

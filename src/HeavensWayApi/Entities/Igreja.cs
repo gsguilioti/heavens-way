@@ -24,6 +24,13 @@ namespace HeavensWayApi.Entities
             EnderecoId = dto.EnderecoId;
         }
 
+        public Igreja(CreateIgrejaDto dto, int enderecoId)
+        {
+            Nome = dto.Nome;
+            DistritoId = dto.DistritoId;
+            EnderecoId = enderecoId;
+        }
+
         public void MapDto(IgrejaDto dto)
         {
             Nome = dto.Nome;

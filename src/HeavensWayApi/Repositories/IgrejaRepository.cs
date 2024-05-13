@@ -12,7 +12,7 @@ namespace HeavensWayApi.Repositories
         }
 
         public Igreja GetById(int id) => _context.Igrejas.FirstOrDefault(t => t.Id == id);
-
+        public IEnumerable<Igreja> GetByDistrito(int id) => _context.Igrejas.Where(i => i.DistritoId == id);
         public IEnumerable<Igreja> GetAll() => _context.Igrejas;
 
         public void Create(Igreja igreja)

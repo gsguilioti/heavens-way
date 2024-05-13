@@ -30,5 +30,14 @@ namespace HeavensWayApi.Entities
             Cidade = dto.Cidade;
             Estado = dto.Estado;
         }
+
+        public void MapResponseDto(ResponseEnderecoDto dto)
+        {
+            Cep = dto.Cep;
+            Logradouro = dto.Logradouro;
+            Bairro = dto.Bairro;
+            Cidade = dto.Localidade;
+            Estado = dto.Uf;
+        }
     }
 }

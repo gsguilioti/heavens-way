@@ -9,6 +9,7 @@ using Swashbuckle.AspNetCore.Filters;
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Repositories;
+using HeavensWayApi.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +36,10 @@ builder.Services.AddScoped<EnderecoRepository>();
 builder.Services.AddScoped<EventoRepository>();
 builder.Services.AddScoped<IgrejaRepository>();
 builder.Services.AddScoped<TipoEventoRepository>();
+builder.Services.AddScoped<UsuarioRepository>();
 builder.Services.AddScoped<UserManager<Usuario>>();
+builder.Services.AddScoped<EventoService>();
+builder.Services.AddScoped<EnderecoService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

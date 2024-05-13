@@ -29,6 +29,15 @@ namespace HeavensWayApi.Controllers
             return Ok(distritoDto);
         }
 
+        [HttpGet("descricao/{description}")]
+        public IActionResult GetByCep(string description)
+        {
+            var tiposEvento = _repository.GetByDescription(description);
+
+            var tiposEventoDto = tiposEvento.Select(te => new TipoEventoDto(te));
+            return Ok(tiposEventoDto);
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {

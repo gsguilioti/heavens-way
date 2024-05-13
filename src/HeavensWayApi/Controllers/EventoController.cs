@@ -1,6 +1,7 @@
 using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
+using HeavensWayApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -12,9 +13,11 @@ namespace HeavensWayApi.Controllers
     public class EventoController : ControllerBase
     {
         private readonly EventoRepository _repository;
-        public EventoController(EventoRepository repository)
+        private readonly EventoService _eventoService;
+        public EventoController(EventoRepository repository, EventoService eventoService)
         {
             _repository = repository;
+            _eventoService = eventoService;
         }
 
         [HttpGet("{id}")]
@@ -27,6 +30,30 @@ namespace HeavensWayApi.Controllers
 
             var eventoDto = new EventoDto(evento);
             return Ok(eventoDto);
+        }
+
+        [HttpGet("usuario/{id}")]
+        public IActionResult GetByUsuario(int id)
+        {
+            var eventos = _repository.GetByUsuario(id);
+                
+            return Ok(eventos);
+        }
+
+        [HttpGet("igreja/{id}")]
+        public IActionResult GetByIgreja(int id)
+        {
+            var eventos = _repository.GetByIgreja(id);
+                
+            return Ok(eventos);
+        }
+
+        [HttpGet("inscritos/{id}")]
+        public IActionResult GetInscritos(int id)
+        {
+            var eventos = _repository.GetInscritos(id);
+                
+            return Ok(eventos);
         }
 
         [HttpGet]
@@ -43,6 +70,15 @@ namespace HeavensWayApi.Controllers
             var evento = new Evento(dto);
             _repository.Create(evento);
             return Ok();
+        }
+
+        [HttpPost("inscrever/{eventoId}/{usuarioId}")]
+        public IActionResult Inscrever(int eventoId, int usuarioId)
+        {
+            if(_eventoService.Inscrever(eventoId, usuarioId))
+                return Ok();
+
+            return BadRequest();
         }
 
         [HttpPut("{id}")]

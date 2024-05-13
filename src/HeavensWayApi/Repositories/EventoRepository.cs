@@ -12,6 +12,14 @@ namespace HeavensWayApi.Repositories
         }
 
         public Evento GetById(int id) => _context.Eventos.FirstOrDefault(t => t.Id == id);
+        public IEnumerable<Evento> GetByUsuario(int id) => _context.Eventos.Where(e => e.Usuarios.Any(u => u.Id == id));
+        public IEnumerable<Evento> GetByIgreja(int id) => _context.Eventos.Where(e => e.Igrejas.Any(i => i.Id == id));
+        public IEnumerable<Usuario> GetInscritos(int id)
+        {
+            return _context.Eventos.Where(e => e.Id == id)
+                                           .SelectMany(e => e.Usuarios)
+                                           .ToList();
+        }
 
         public IEnumerable<Evento> GetAll() => _context.Eventos;
 

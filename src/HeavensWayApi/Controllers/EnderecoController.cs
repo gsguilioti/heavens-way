@@ -29,6 +29,18 @@ namespace HeavensWayApi.Controllers
             return Ok(enderecoDto);
         }
 
+        [HttpGet("cep/{cep}")]
+        public IActionResult GetByCep(string cep)
+        {
+            var endereco = _repository.GetByCep(cep);
+
+            if(endereco == null)
+                return NotFound(new { Message = "Not Found"});
+
+            var enderecoDto = new EnderecoDto(endereco);
+            return Ok(enderecoDto);
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {

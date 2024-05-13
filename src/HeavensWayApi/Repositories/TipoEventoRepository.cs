@@ -12,7 +12,7 @@ namespace HeavensWayApi.Repositories
         }
 
         public TipoEvento GetById(int id) => _context.TiposEvento.FirstOrDefault(t => t.Id == id);
-
+        public IEnumerable<TipoEvento> GetByDescription(string description) => _context.TiposEvento.Where(t => t.Descricao.Contains(description));
         public IEnumerable<TipoEvento> GetAll() => _context.TiposEvento;
 
         public void Create(TipoEvento tipoEvento)

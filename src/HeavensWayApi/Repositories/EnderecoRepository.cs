@@ -1,5 +1,6 @@
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
+using System.Text;
 
 namespace HeavensWayApi.Repositories
 {
@@ -12,7 +13,7 @@ namespace HeavensWayApi.Repositories
         }
 
         public Endereco GetById(int id) => _context.Enderecos.FirstOrDefault(t => t.Id == id);
-
+        public Endereco GetByCep(string cep) => _context.Enderecos.FirstOrDefault(t => t.Cep.Equals(cep));
         public IEnumerable<Endereco> GetAll() => _context.Enderecos;
 
         public void Create(Endereco endereco)
