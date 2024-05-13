@@ -161,9 +161,10 @@ namespace HeavensWayApi.Controllers
 
         private string GenerateJwtToken(Usuario usuario)
         {
+            var role = GetRole(usuario);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, usuario.UserName),
+                new Claim(ClaimTypes.Role, role.Result),
                 new Claim(ClaimTypes.Name, usuario.UserName)
             };
 
@@ -180,6 +181,15 @@ namespace HeavensWayApi.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private async Task<string> GetRole(Usuario usuario)
+        {
+            var roles = await _userManager.GetRolesAsync(usuario);
+            if(roles.Count > 0)
+                return roles[0];
+            
+            return "User";
         }
     }
 }

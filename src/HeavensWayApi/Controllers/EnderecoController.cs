@@ -10,8 +10,8 @@ namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     [OutputCache]
+    [Authorize(Roles = "Admin")]
     public class EnderecoController : ControllerBase
     {
         private readonly IEnderecoRepository _repository;

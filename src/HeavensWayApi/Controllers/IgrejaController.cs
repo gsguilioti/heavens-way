@@ -11,8 +11,8 @@ namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     [OutputCache]
+    [Authorize(Roles = "Admin")]
     public class IgrejaController : ControllerBase
     {
         private readonly IIgrejaRepository _repository;

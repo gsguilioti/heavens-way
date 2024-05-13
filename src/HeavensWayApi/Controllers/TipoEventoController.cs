@@ -10,8 +10,8 @@ namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     [OutputCache]
+    [Authorize(Roles = "Admin")]
     public class TipoEventoController : ControllerBase
     {
         private readonly ITipoEventoRepository _repository;

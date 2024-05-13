@@ -12,7 +12,6 @@ namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     [OutputCache]
     public class EventoController : ControllerBase
     {
@@ -25,6 +24,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public IActionResult GetById(int id)
         {
             var evento = _repository.GetById(id);
@@ -37,6 +37,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpGet("usuario/{id}")]
+        [Authorize]
         public IActionResult GetByUsuario(int id)
         {
             var eventos = _repository.GetByUsuario(id);
@@ -45,6 +46,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpGet("igreja/{id}")]
+        [Authorize]
         public IActionResult GetByIgreja(int id)
         {
             var eventos = _repository.GetByIgreja(id);
@@ -53,6 +55,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpGet("inscritos/{id}")]
+        [Authorize]
         public IActionResult GetInscritos(int id)
         {
             var eventos = _repository.GetInscritos(id);
@@ -61,6 +64,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             var eventos = _repository.GetAll();
@@ -69,6 +73,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(EventoDto dto)
         {
             var evento = new Evento(dto);
@@ -77,6 +82,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpPost("inscrever/{eventoId}/{usuarioId}")]
+        [Authorize]
         public IActionResult Inscrever(int eventoId, int usuarioId)
         {
             if(_eventoService.Inscrever(eventoId, usuarioId))
@@ -86,6 +92,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Update(int id, EventoDto dto)
         {
             var evento = _repository.GetById(id);
@@ -99,6 +106,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var evento = _repository.GetById(id);

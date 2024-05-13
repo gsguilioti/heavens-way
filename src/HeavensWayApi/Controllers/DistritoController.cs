@@ -10,8 +10,8 @@ namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     [OutputCache]
+    [Authorize(Roles = "Admin")]
     public class DistritoController : ControllerBase
     {
         private readonly IDistritoRepository _repository;

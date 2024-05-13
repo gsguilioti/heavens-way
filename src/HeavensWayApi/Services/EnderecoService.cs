@@ -3,17 +3,18 @@ using HeavensWayApi.Dto;
 using HeavensWayApi.Entities;
 using System.Text.Json;
 using HeavensWayApi.Services.Interfaces;
+using HeavensWayApi.Repositories.Interfaces;
 
 namespace HeavensWayApi.Services
 {
     public class EnderecoService : IEnderecoService
     {
-        private readonly EnderecoRepository _enderecoRepository;
+        private readonly IEnderecoRepository _enderecoRepository;
         private readonly HttpClient _httpClient;
 
         const string URI = "https://opencep.com/v1/";
 
-        public EnderecoService(EnderecoRepository enderecoRepository)
+        public EnderecoService(IEnderecoRepository enderecoRepository)
         {
             _enderecoRepository = enderecoRepository;
             _httpClient = new HttpClient
