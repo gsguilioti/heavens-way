@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.Net.Http.Headers;
 using Swashbuckle.AspNetCore.Filters;
 using HeavensWayApi.Data;
 using HeavensWayApi.Entities;
@@ -79,6 +77,11 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+builder.Services.AddOutputCache(opt =>
+{
+    opt.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(30);
+});
+
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -89,6 +92,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseOutputCache();
 
 app.UseHttpsRedirection();
 

@@ -4,12 +4,14 @@ using HeavensWayApi.Dto;
 using HeavensWayApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    [OutputCache]
     public class EventoController : ControllerBase
     {
         private readonly EventoRepository _repository;

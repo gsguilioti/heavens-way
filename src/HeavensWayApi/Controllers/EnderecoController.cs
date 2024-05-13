@@ -3,12 +3,14 @@ using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    [OutputCache]
     public class EnderecoController : ControllerBase
     {
         private readonly EnderecoRepository _repository;

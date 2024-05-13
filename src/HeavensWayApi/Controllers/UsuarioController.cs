@@ -12,12 +12,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace HeavensWayApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [AllowAnonymous]
+    [OutputCache]
     public class UsuarioController : ControllerBase
     {
         private readonly UserManager<Usuario> _userManager;  
