@@ -1,4 +1,3 @@
-using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +35,9 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetAll()
         {
             var distritos = _repository.GetAll();
-                
+            if(distritos.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
+
             return Ok(distritos);
         }
 
@@ -45,7 +46,7 @@ namespace HeavensWayApi.Controllers
         {
             var distrito = new Distrito(dto);
             _repository.Create(distrito);
-            return Ok();
+            return Created("/distritos", distrito);
         }
 
         [HttpPut("{id}")]

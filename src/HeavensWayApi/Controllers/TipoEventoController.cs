@@ -36,6 +36,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetByDescription(string description)
         {
             var tiposEvento = _repository.GetByDescription(description);
+            if(tiposEvento.ToList().Count == 0)
+                return NotFound(new {Message = "Nenhum registro encontrado"});
 
             var tiposEventoDto = tiposEvento.Select(te => new TipoEventoDto(te));
             return Ok(tiposEventoDto);
@@ -45,6 +47,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetAll()
         {
             var tiposEvento = _repository.GetAll();
+            if(tiposEvento.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(tiposEvento);
         }
@@ -54,7 +58,7 @@ namespace HeavensWayApi.Controllers
         {
             var tipoEvento = new TipoEvento(dto);
             _repository.Create(tipoEvento);
-            return Ok();
+            return Created("/tiposevento", tipoEvento);
         }
 
         [HttpPut("{id}")]

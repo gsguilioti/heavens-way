@@ -1,7 +1,5 @@
-using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
-using HeavensWayApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OutputCaching;
@@ -41,6 +39,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetByUsuario(int id)
         {
             var eventos = _repository.GetByUsuario(id);
+            if(eventos.ToList().Count == 0)
+                return Ok(new {Message = "Sem registros cadastrados"});
                 
             return Ok(eventos);
         }
@@ -50,6 +50,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetByIgreja(int id)
         {
             var eventos = _repository.GetByIgreja(id);
+            if(eventos.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(eventos);
         }
@@ -59,6 +61,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetInscritos(int id)
         {
             var eventos = _repository.GetInscritos(id);
+            if(eventos.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(eventos);
         }
@@ -68,6 +72,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetAll()
         {
             var eventos = _repository.GetAll();
+            if(eventos.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(eventos);
         }
@@ -78,7 +84,7 @@ namespace HeavensWayApi.Controllers
         {
             var evento = new Evento(dto);
             _repository.Create(evento);
-            return Ok();
+            return Created("/eventos", evento);
         }
 
         [HttpPost("inscrever/{eventoId}/{usuarioId}")]

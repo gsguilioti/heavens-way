@@ -48,6 +48,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetAll()
         {
             var enderecos = _repository.GetAll();
+            if(enderecos.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(enderecos);
         }
@@ -57,7 +59,7 @@ namespace HeavensWayApi.Controllers
         {
             var endereco = new Endereco(dto);
             _repository.Create(endereco);
-            return Ok();
+            return Created("/enderecos", endereco);
         }
 
         [HttpPut("{id}")]

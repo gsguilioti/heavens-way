@@ -1,12 +1,8 @@
-using HeavensWayApi.Repositories;
 using HeavensWayApi.Entities;
 using HeavensWayApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,14 +19,14 @@ namespace HeavensWayApi.Controllers
     [OutputCache]
     public class UsuarioController : ControllerBase
     {
-        private readonly UserManager<Usuario> _userManager;  
+        private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IUsuarioRepository _repository;
 
-        public UsuarioController(UserManager<Usuario> userManager, 
-                                 SignInManager<Usuario> signInManager, 
+        public UsuarioController(UserManager<Usuario> userManager,
+                                 SignInManager<Usuario> signInManager,
                                  RoleManager<IdentityRole<int>> roleManager,
                                  IConfiguration configuration,
                                  IUsuarioRepository repository)
@@ -48,8 +44,8 @@ namespace HeavensWayApi.Controllers
         {
             var usuario = await _userManager.FindByIdAsync(id.ToString());
 
-            if(usuario == null)
-                return NotFound(new { Message = "Not Found"});
+            if (usuario == null)
+                return NotFound(new { Message = "Not Found" });
 
             return Ok(usuario);
         }
@@ -60,6 +56,9 @@ namespace HeavensWayApi.Controllers
             var usuarios = _repository.GetByIgreja(id);
 
             var usuariosoDto = usuarios.Select(u => new GetUsuarioDto(u));
+            if (usuariosoDto.ToList().Count == 0)
+                return Ok(new { Message = "Nenhum registro encontrado" });
+
             return Ok(usuariosoDto);
         }
 
@@ -76,6 +75,9 @@ namespace HeavensWayApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var users = await _userManager.Users.Select(x => new GetUsuarioDto(x)).ToListAsync();
+            if (users.Count == 0)
+                return Ok(new { Message = "Nenhum registro encontrado" });
+
             return Ok(users);
         }
 
@@ -85,25 +87,16 @@ namespace HeavensWayApi.Controllers
             var usuario = new Usuario(dto);
             var result = await _userManager.CreateAsync(usuario, dto.Password);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            var checkAdmin = await _roleManager.FindByNameAsync("Admin");
-            if (checkAdmin is null)
-            {
-                await _roleManager.CreateAsync(new IdentityRole<int>() { Name = "Admin" });
-                await _userManager.AddToRoleAsync(usuario, "Admin");
-            }
-            else
-            {
-                var checkUser = await _roleManager.FindByNameAsync("User");
-                if (checkUser is null)
-                    await _roleManager.CreateAsync(new IdentityRole<int>() { Name = "User" });
+            var checkRole = await _roleManager.FindByNameAsync(dto.Role);
+            if (checkRole == null)
+                await _roleManager.CreateAsync(new IdentityRole<int>() { Name = dto.Role });
 
-                await _userManager.AddToRoleAsync(usuario, "User");
-            }
+            await _userManager.AddToRoleAsync(usuario, dto.Role);
 
-            return Ok();
+            return Created("/usuarios", usuario);
         }
 
         [HttpPut("{id}")]
@@ -111,15 +104,15 @@ namespace HeavensWayApi.Controllers
         {
             var usuario = await _userManager.FindByIdAsync(id.ToString());
 
-            if(usuario == null)
-                return NotFound(new { Message = "Not Found"});
+            if (usuario == null)
+                return NotFound(new { Message = "Not Found" });
 
             usuario.MapDto(dto);
 
             var result = await _userManager.UpdateAsync(usuario);
-            if(!result.Succeeded)
+            if (!result.Succeeded)
                 return BadRequest(result.Errors);
-            
+
             return Ok();
         }
 
@@ -128,17 +121,17 @@ namespace HeavensWayApi.Controllers
         {
             var usuario = await _userManager.FindByIdAsync(id.ToString());
 
-            if(usuario == null)
-                return NotFound(new { Message = "Not Found"});
+            if (usuario == null)
+                return NotFound(new { Message = "Not Found" });
 
             var result = await _userManager.DeleteAsync(usuario);
-            if(!result.Succeeded)
+            if (!result.Succeeded)
                 return BadRequest(result.Errors);
-            
+
             return Ok();
         }
 
-         [HttpPost("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUsuarioDto dto)
         {
             var usuario = await _userManager.FindByNameAsync(dto.UserName);
@@ -148,15 +141,11 @@ namespace HeavensWayApi.Controllers
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(usuario, dto.Password, lockoutOnFailure: false);
-            if (result.Succeeded)
-            {
-                var token = "Bearer " + GenerateJwtToken(usuario);
-                return Ok(new { token });
-            }
-            else
-            {
+            if (!result.Succeeded)
                 return Unauthorized(new { message = "Invalid username or password" });
-            }
+
+            var token = "Bearer " + GenerateJwtToken(usuario);
+            return Ok(new { token });
         }
 
         private string GenerateJwtToken(Usuario usuario)
@@ -186,9 +175,9 @@ namespace HeavensWayApi.Controllers
         private async Task<string> GetRole(Usuario usuario)
         {
             var roles = await _userManager.GetRolesAsync(usuario);
-            if(roles.Count > 0)
+            if (roles.Count > 0)
                 return roles[0];
-            
+
             return "User";
         }
     }

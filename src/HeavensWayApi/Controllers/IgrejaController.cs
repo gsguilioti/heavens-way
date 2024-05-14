@@ -39,6 +39,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetByDistrito(int id)
         {
             var igrejas = _repository.GetByDistrito(id);
+            if(igrejas.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(igrejas);
         }
@@ -47,6 +49,8 @@ namespace HeavensWayApi.Controllers
         public IActionResult GetAll()
         {
             var igrejas = _repository.GetAll();
+            if(igrejas.ToList().Count == 0)
+                return Ok(new {Message = "Nenhum registro encontrado"});
                 
             return Ok(igrejas);
         }
@@ -60,7 +64,7 @@ namespace HeavensWayApi.Controllers
 
             var igreja = new Igreja(dto, endereco.Id);
             _repository.Create(igreja);
-            return Ok();
+            return Created("/igrejas", igreja);
         }
 
         [HttpPut("{id}")]
