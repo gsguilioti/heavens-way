@@ -13,19 +13,21 @@ namespace HeavensWayTest.Controllers
     {
         private EventoController _controller;
         private readonly IEventoRepository _repository;
+        private readonly IIgrejaRepository _igrejaRepository;
         private readonly IEventoService _eventoService;
 
         public EventoControllerTest()
         {
             _repository = Substitute.For<IEventoRepository>();
+            _igrejaRepository = Substitute.For<IIgrejaRepository>();
             _eventoService = Substitute.For<IEventoService>();
-            _controller = new EventoController(_repository, _eventoService);
+            _controller = new EventoController(_repository, _eventoService, _igrejaRepository);
         }
 
         [Fact]
         public void Get_By_Id()
         {
-            var evento = new Evento{ Id = 1, Descricao = "Reuniao", TipoEventoId = 1, DataInicio = DateTime.Now, Duracao = new TimeSpan(2, 0, 0) };
+            var evento = new Evento{ Id = 1, Descricao = "Reuniao", TipoEventoId = 1, DataInicio = DateTime.Now, DataFim = DateTime.Now };
             var eventoDto = new EventoDto(evento);
 
             _repository.GetById(evento.Id).Returns(evento);
@@ -40,15 +42,15 @@ namespace HeavensWayTest.Controllers
             var eventoResult = okResult.Value as EventoDto;
             Assert.Equal(eventoDto.Descricao, eventoResult.Descricao);
             Assert.Equal(eventoDto.DataInicio, eventoResult.DataInicio);
-            Assert.Equal(eventoDto.Duracao, eventoResult.Duracao);
+            Assert.Equal(eventoDto.DataFim, eventoResult.DataFim);
             Assert.Equal(eventoDto.TipoEventoId, eventoResult.TipoEventoId);
         }
 
         [Fact]
         public void Get_All()
         {
-            var evento1 = new Evento{ Id = 1, Descricao = "Reuniao", TipoEventoId = 1, DataInicio = DateTime.Now, Duracao = new TimeSpan(2, 0, 0) };
-            var evento2 = new Evento{ Id = 2, Descricao = "Reuniao", TipoEventoId = 2, DataInicio = DateTime.Now, Duracao = new TimeSpan(3, 0, 0) };
+            var evento1 = new Evento{ Id = 1, Descricao = "Reuniao", TipoEventoId = 1, DataInicio = DateTime.Now, DataFim = DateTime.Now };
+            var evento2 = new Evento{ Id = 2, Descricao = "Reuniao", TipoEventoId = 2, DataInicio = DateTime.Now, DataFim = DateTime.Now };
             var eventos = new List<Evento>
             {
                 evento1,

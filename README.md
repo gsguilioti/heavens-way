@@ -28,6 +28,10 @@ O banco de dados utilizado foi o SQL Server, fica à configuração usuário sej
 
 Para configurar o banco  acesse a pasta src/HeavensWayApi/ e utilize o comando **dotnet ef database update** em seu terminal.
 
+Para execução dos testes unitários acesse o diretório do projeto de testes em src/HeavensWayTest/ e em seguida utilize o comando em seu terminal:
+
+> dotnet test
+
 ---
 
 ## Recomendações
@@ -45,7 +49,7 @@ A aplicação conta com Autenticação e Autorização, para utilizar todas as f
 - Swagger (documentação)
 - Autenticação e Autorização com JWT.
 - Cache (Middleware nativo .Net 8)
-- Testes Unitários (projeto em src/HeavensWayTest/)
+- Xunit(Testes unitários) e Nsubstitute(Mock)
 
 ---
 
