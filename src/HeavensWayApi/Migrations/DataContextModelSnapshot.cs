@@ -34,7 +34,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("IgrejasId");
 
-                    b.ToTable("EventoIgreja", (string)null);
+                    b.ToTable("EventoIgreja");
                 });
 
             modelBuilder.Entity("EventoUsuario", b =>
@@ -49,7 +49,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("UsuariosId");
 
-                    b.ToTable("EventoUsuario", (string)null);
+                    b.ToTable("EventoUsuario");
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Distrito", b =>
@@ -61,12 +61,11 @@ namespace HeavensWayApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Distritos", (string)null);
+                    b.ToTable("Distritos");
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Endereco", b =>
@@ -78,28 +77,23 @@ namespace HeavensWayApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bairro")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cep")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cidade")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Estado")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Logradouro")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Enderecos", (string)null);
+                    b.ToTable("Enderecos");
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Evento", b =>
@@ -110,15 +104,14 @@ namespace HeavensWayApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataFim")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("Duracao")
-                        .HasColumnType("time");
 
                     b.Property<int>("TipoEventoId")
                         .HasColumnType("int");
@@ -127,7 +120,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("TipoEventoId");
 
-                    b.ToTable("Eventos", (string)null);
+                    b.ToTable("Eventos");
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Igreja", b =>
@@ -145,7 +138,6 @@ namespace HeavensWayApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -154,7 +146,7 @@ namespace HeavensWayApi.Migrations
 
                     b.HasIndex("EnderecoId");
 
-                    b.ToTable("Igrejas", (string)null);
+                    b.ToTable("Igrejas");
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.TipoEvento", b =>
@@ -166,12 +158,11 @@ namespace HeavensWayApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposEvento", (string)null);
+                    b.ToTable("TiposEvento");
                 });
 
             modelBuilder.Entity("HeavensWayApi.Entities.Usuario", b =>
@@ -206,7 +197,6 @@ namespace HeavensWayApi.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")

@@ -17,8 +17,8 @@ namespace HeavensWayApi.Repositories
         public IEnumerable<Usuario> GetByEvento(int id) => _context.Usuarios.Where(u => u.Eventos.Any(e => e.Id == id));
         public void Inscrever(Evento evento, Usuario usuario)
         {
-            usuario.Eventos.Add(evento);
-            _context.Usuarios.Update(usuario);
+            evento.Usuarios = new List<Usuario>();
+            evento.Usuarios.Add(usuario);
             _context.SaveChanges();
         }
     }

@@ -35,15 +35,14 @@ namespace HeavensWayApi.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseBody = await response.Content. ReadAsStringAsync();
-                    ResponseEnderecoDto responseDto = JsonSerializer.Deserialize<ResponseEnderecoDto>(responseBody);
-                    endereco.MapResponseDto(responseDto);
+                    var responseBody = await response.Content.ReadFromJsonAsync<ResponseEnderecoDto>();
+                    endereco = new Endereco(responseBody);
                     _enderecoRepository.Create(endereco);
                 }
             }
             catch(HttpRequestException ex)
             {
-                throw new Exception($"Falha ao recuperar informões de endereço para o CEP: {cep}. {ex.Message}");
+                throw new Exception($"Falha ao recuperar informações de endereço para o CEP: {cep}. {ex.Message}");
             }
 
             return endereco;

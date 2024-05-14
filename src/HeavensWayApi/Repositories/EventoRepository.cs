@@ -41,5 +41,13 @@ namespace HeavensWayApi.Repositories
             _context.Eventos.Remove(evento);
             _context.SaveChanges();
         }
+
+        public void AddIgreja(Igreja igreja, int eventoId)
+        {
+            var evento = _context.Eventos.FirstOrDefault(e => e.Id == eventoId);
+            evento.Igrejas = new List<Igreja>();
+            evento.Igrejas.Add(igreja);
+            _context.SaveChanges();
+        }
     }
 }

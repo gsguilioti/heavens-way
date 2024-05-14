@@ -9,12 +9,9 @@ namespace HeavensWayApi.Entities
 
         public int TipoEventoId { get; set; }
         public TipoEvento TipoEvento { get; set; }
-
         public DateTime DataInicio { get; set; }
-        public TimeSpan Duracao { get; set; }
-
+        public DateTime DataFim { get; set; }
         public ICollection<Usuario> Usuarios { get; set; }
-
         public ICollection<Igreja> Igrejas { get; set; }
 
         public Evento() {}
@@ -24,7 +21,7 @@ namespace HeavensWayApi.Entities
             Descricao = dto.Descricao;
             TipoEventoId = dto.TipoEventoId;
             DataInicio = dto.DataInicio;
-            Duracao = dto.Duracao;
+            DataFim = dto.DataFim;
         }
 
         public void MapDto(EventoDto dto)
@@ -32,7 +29,7 @@ namespace HeavensWayApi.Entities
             Descricao = dto.Descricao;
             TipoEventoId = dto.TipoEventoId;
             DataInicio = dto.DataInicio;
-            Duracao = dto.Duracao;
+            DataFim = dto.DataFim;
         }
     }
 }

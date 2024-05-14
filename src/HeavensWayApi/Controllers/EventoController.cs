@@ -14,11 +14,13 @@ namespace HeavensWayApi.Controllers
     public class EventoController : ControllerBase
     {
         private readonly IEventoRepository _repository;
+        private readonly IIgrejaRepository _igrejaRepository;
         private readonly IEventoService _eventoService;
-        public EventoController(IEventoRepository repository, IEventoService eventoService)
+        public EventoController(IEventoRepository repository, IEventoService eventoService, IIgrejaRepository igrejaRepository)
         {
             _repository = repository;
             _eventoService = eventoService;
+            _igrejaRepository = igrejaRepository;
         }
 
         [HttpGet("{id}")]
@@ -60,11 +62,17 @@ namespace HeavensWayApi.Controllers
         [Authorize]
         public IActionResult GetInscritos(int id)
         {
-            var eventos = _repository.GetInscritos(id);
-            if(eventos.ToList().Count == 0)
+            var usuarios = _repository.GetInscritos(id);
+            if(usuarios.ToList().Count == 0)
                 return Ok(new {Message = "Nenhum registro encontrado"});
                 
-            return Ok(eventos);
+            var usuariosList = new List<UsuarioDto>();
+            foreach(var usuario in usuarios)
+            {
+                usuariosList.Add(new UsuarioDto(usuario));
+            }
+
+            return Ok(usuariosList);
         }
 
         [HttpGet]
@@ -82,8 +90,13 @@ namespace HeavensWayApi.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create(EventoDto dto)
         {
+            var igreja = _igrejaRepository.GetById(dto.IgrejaId);
+            if(igreja == null)
+                return BadRequest(new { Message = "Igreja não encontrada"} );
+
             var evento = new Evento(dto);
             _repository.Create(evento);
+            _repository.AddIgreja(igreja, evento.Id);
             return Created("/eventos", evento);
         }
 
@@ -92,7 +105,7 @@ namespace HeavensWayApi.Controllers
         public IActionResult Inscrever(int eventoId, int usuarioId)
         {
             if(_eventoService.Inscrever(eventoId, usuarioId))
-                return Ok();
+                return Ok(new {Message = "Usuário inscrito com sucesso!"});
 
             return BadRequest();
         }

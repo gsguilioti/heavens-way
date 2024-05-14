@@ -42,6 +42,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Create(DistritoDto dto)
         {
             var distrito = new Distrito(dto);

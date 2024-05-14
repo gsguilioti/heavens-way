@@ -56,6 +56,7 @@ namespace HeavensWayApi.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Create(CreateIgrejaDto dto)
         {
             var endereco = _enderecoService.Create(dto.Cep);

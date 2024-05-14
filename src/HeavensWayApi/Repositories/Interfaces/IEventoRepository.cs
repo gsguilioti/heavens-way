@@ -12,5 +12,6 @@ namespace HeavensWayApi.Repositories.Interfaces
         public void Create(Evento evento);
         public void Update(Evento evento);
         public void Delete(Evento evento);
+        public void AddIgreja(Igreja igreja, int eventoId);
     }
 }
